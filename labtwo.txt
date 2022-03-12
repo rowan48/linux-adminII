@@ -1,0 +1,44 @@
+1-Using Virtual machine
+	1-Add two disks
+	2-COnfigure Volume group of the 2 disks
+	3-Create two logical volume		
+		1-lv1 : 20% of total VG
+		2-lv2 : 80% rest of VG
+2-Configure a web application on apache web on this VM
+	1-Document root will use the lv1
+	2-Apache (Access log, and error log) will use the lv2
+3-Use suitable names for VG and lv
+=======================================
+sudo pvcreate /dev/sdb 
+sudo pvdisplay /dev/sdb
+sudo vgcreate itivg /dev/sdb
+sudo vgdisplay itivg
+sudo lvcreate -L 5G -n webapp itivg
+sudo lvdisplay /dev/itivg/webapp
+sudo lvcreate -l 100%FREE -n log itivg
+sudo mkdir /mydata
+sudo mkdir /mydata/webapp
+sudo mkdir /mydata/log
+sudo mount /dev/itivg/log /mydata/log
+sudo mount /dev/itivg/webapp /mydata/webapp
+cd /mydata/log 
+sudo apt-get update
+sudo apt-get install apache2
+cd /etc/apache2/sites-available
+sudo nano 000-default.conf
+
+
+VirtualHost *:80>
+
+DocumentRoot /mydata/webapp
+</VirtualHost>
+DocumentRoot /mydata/webapp
+ERRORLOG /mydata/log/error.log
+CUSTOMLOG /mydata/log/access.log
+
+<Directory /mydata/webapp>
+Require all granted
+</Directory>
+
+
+
