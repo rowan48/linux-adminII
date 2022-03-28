@@ -1,0 +1,66 @@
+php-S 127.0.0.1
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+apt-cache policy docker-ce
+sudo systemctl status docker
+sudo usermod -aG docker rowan
+su - rowan
+sudo usermod -aG docker rowan
+sudo apt update
+sudo apt docker-compose
+mkdir ~/odoo
+cd ~/odoo
+nano docker-compose.yml
+version: '3'
+services:
+  odoo:
+    image: odoo:15.0
+    env_file: .env
+    depends_on:
+      - postgres
+    ports:
+      - "8069:8069"
+    volumes:
+      - data:/var/lib/odoo
+  postgres:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - db:/var/lib/postgresql/data/pgdata
+
+volumes:
+  data:
+  db:
+  
+  ====================
+  nano .env
+  # postgresql environment variables
+POSTGRES_DB=postgres
+POSTGRES_PASSWORD=rowanahmedali
+POSTGRES_USER=rowan
+PGDATA=/var/lib/postgresql/data/pgdata
+
+# odoo environment variables
+HOST=postgres
+USER=rowan
+PASSWORD=rowanahmedali
+
+==============================
+openssl rand -base64 30
+docker-compose up -d
+
+docker-compose up -d
+
+
+
+curl --head http://localhost:80690r open in browser
+
+
+
+
+
+sudo su=ystemct start apache2
+in browser
+http://localhost:80690
